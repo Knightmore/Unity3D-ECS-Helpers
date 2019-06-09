@@ -1,12 +1,15 @@
+using System;
 using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Unity.Entities
 {
     public class CustomConvertToEntity : MonoBehaviour
     {
-        public string CreateToWorld;
+        public List<string> CreateToWorld = new List<string>();
+
         public enum Mode
         {
             ConvertAndDestroy,
@@ -25,19 +28,22 @@ namespace Unity.Entities
             createConversionWorld       = typeof(GameObjectConversionUtility).GetMethod("CreateConversionWorld",       BindingFlags.NonPublic | BindingFlags.Static);
             convert                     = typeof(GameObjectConversionUtility).GetMethod("Convert",                     BindingFlags.NonPublic | BindingFlags.Static);
 
-            if (World.Active != null && !string.IsNullOrEmpty(CreateToWorld))
+            if (World.Active != null && CreateToWorld.Count > 0)
             {
                 // Root ConvertToEntity is responsible for converting the whole hierarchy
                 if (transform.parent != null && transform.parent.GetComponentInParent<CustomConvertToEntity>() != null)
                     return;
 
-                var convertToWorld = World.AllWorlds.FirstOrDefault(x => x.Name == CreateToWorld);
-                if(convertToWorld != null)
+                foreach (var world in CreateToWorld)
                 {
-                    if (ConversionMode == Mode.ConvertAndDestroy)
-                        ConvertHierarchy(gameObject, convertToWorld);
-                    else
-                        ConvertAndInjectOriginal(gameObject, convertToWorld);
+                    var convertToWorld = World.AllWorlds.FirstOrDefault(x => x.Name == world);
+                    if (convertToWorld != null)
+                    {
+                        if (ConversionMode == Mode.ConvertAndDestroy)
+                            ConvertHierarchy(gameObject, convertToWorld);
+                        else
+                            ConvertAndInjectOriginal(gameObject, convertToWorld);
+                    }
                 }
             }
             else
@@ -120,4 +126,4 @@ namespace Unity.Entities
             gameObjectWorld.Dispose();
         }
     }
-   }
+}
