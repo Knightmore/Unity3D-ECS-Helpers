@@ -7,3 +7,6 @@ This is a customized version of Unitys ConvertToEntity which relies on reflectio
 Add it to the GameObject you want to convert.
 Instead of always using the default world, you can set a list of worldnames in which you want to convert your gameobject into an entity. (e.g. TestWorld or for the default world "Default World")
 ![Example image of the script added to a GameObject](https://i.ibb.co/Fbs00p7/image.png)
+
+If you are using ConvertAndInjectGameObject, the GameObject will be copied for each world that has been defined for it.
+![Copied GameObject in Scene](https://i.ibb.co/1nBMHrz/image.png)
