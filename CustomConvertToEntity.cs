@@ -33,7 +33,7 @@ namespace Unity.Entities
             convert                            = typeof(GameObjectConversionUtility).GetMethod("Convert", BindingFlags.NonPublic                     | BindingFlags.Static);
             injectOriginalComponentsReturnBool = typeof(ConvertToEntity).GetMethods().FirstOrDefault(x => x.Name == "InjectOriginalComponents" && x.ReturnType == typeof(bool));
             injectOriginalComponents           = typeof(ConvertToEntity).GetMethod("InjectOriginalComponents", BindingFlags.NonPublic | BindingFlags.Static);
-            addRecurse                         = typeof(ConvertToEntity).GetMethod("AddRecurse", BindingFlags.NonPublic               | BindingFlags.Static);
+            addRecurse                         = typeof(ConvertToEntity).GetMethod("AddRecurse", BindingFlags.Public               | BindingFlags.Static);
 
             var       gameObjectName = gameObject.name;
             if (World.Active != null && CreateToWorld.Count > 0)
